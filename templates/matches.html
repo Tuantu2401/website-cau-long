@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="section-title">
+    <p class="eyebrow">Nhập tỉ số</p>
+    <h2>Lịch thi đấu và kết quả</h2>
+    <p>Sau khi nhập đủ kết quả vòng bảng, hệ thống tự tạo 2 trận bán kết. Sau khi nhập xong bán kết, hệ thống tự tạo trận chung kết.</p>
+</section>
+
+<div class="match-list">
+{% for m in matches %}
+    <article class="match-card">
+        <div class="match-head">
+            <div>
+                <span class="badge {{ m.stage }}">
+                    {% if m.stage == 'group' %}Bảng {{ m.group_name }}{% elif m.stage == 'semifinal' %}Bán kết{% else %}Chung kết{% endif %}
+                </span>
+                <h3>{{ m.round_name }}</h3>
+            </div>
+            <span class="status {{ m.status }}">{{ 'Đã xong' if m.status == 'finished' else 'Chưa đấu' }}</span>
+        </div>
+        <div class="versus">
+            <strong>{{ m.team1_name }}</strong>
+            <span>VS</span>
+            <strong>{{ m.team2_name }}</strong>
+        </div>
+        {% if m.winner_name %}<p class="winner">Đội thắng: <b>{{ m.winner_name }}</b></p>{% endif %}
+
+        <form method="post" action="{{ url_for('update_score', match_id=m.id) }}" class="score-form">
+            {% if m.stage == 'group' %}
+                <label>{{ m.team1_name }}<input type="number" name="team1_score" min="0" max="40" value="{{ m.team1_score or '' }}" placeholder="21"></label>
+                <label>{{ m.team2_name }}<input type="number" name="team2_score" min="0" max="40" value="{{ m.team2_score or '' }}" placeholder="18"></label>
+            {% else %}
+                <div class="sets">
+                    <label>Set 1 {{ m.team1_name }}<input type="number" name="set1_t1" min="0" max="30" value="{{ m.set1_t1 or '' }}"></label>
+                    <label>Set 1 {{ m.team2_name }}<input type="number" name="set1_t2" min="0" max="30" value="{{ m.set1_t2 or '' }}"></label>
+                    <label>Set 2 {{ m.team1_name }}<input type="number" name="set2_t1" min="0" max="30" value="{{ m.set2_t1 or '' }}"></label>
+                    <label>Set 2 {{ m.team2_name }}<input type="number" name="set2_t2" min="0" max="30" value="{{ m.set2_t2 or '' }}"></label>
+                    <label>Set 3 {{ m.team1_name }}<input type="number" name="set3_t1" min="0" max="30" value="{{ m.set3_t1 or '' }}"></label>
+                    <label>Set 3 {{ m.team2_name }}<input type="number" name="set3_t2" min="0" max="30" value="{{ m.set3_t2 or '' }}"></label>
+                </div>
+            {% endif %}
+            <button type="submit">Lưu tỉ số</button>
+        </form>
+    </article>
+{% endfor %}
+</div>
+{% endblock %}

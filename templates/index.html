@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="hero">
+    <div>
+        <p class="eyebrow">Roadmap giải đấu</p>
+        <h2>Vòng bảng → Bán kết → Chung kết vô địch</h2>
+        <p>Vòng bảng đánh 1 set 21 điểm. Thắng được 1 điểm, thua 0 điểm. Bán kết và chung kết đánh tối đa 3 set, mỗi set 15 điểm, đội nào thắng 2 set trước sẽ thắng trận.</p>
+    </div>
+    <div class="hero-card">
+        {% if roadmap.champion %}
+            <span class="cup">🏆</span>
+            <h3>Nhà vô địch</h3>
+            <strong>{{ roadmap.champion }}</strong>
+        {% else %}
+            <span class="cup">🏸</span>
+            <h3>Giải đấu đang diễn ra</h3>
+            <strong>Chưa xác định vô địch</strong>
+        {% endif %}
+    </div>
+</section>
+
+<section class="roadmap">
+    <div class="step done">
+        <span>1</span>
+        <h3>Vòng bảng</h3>
+        <p>Bảng A: Đội 1-4<br>Bảng B: Đội 5-8</p>
+        <strong>{{ roadmap.group[0] }}/{{ roadmap.group[1] }} trận đã xong</strong>
+    </div>
+    <div class="connector"></div>
+    <div class="step {% if roadmap.semifinal[1] > 0 %}done{% endif %}">
+        <span>2</span>
+        <h3>Bán kết</h3>
+        <p>Nhất A gặp Nhì B<br>Nhì A gặp Nhất B</p>
+        <strong>{{ roadmap.semifinal[0] }}/{{ roadmap.semifinal[1] }} trận đã xong</strong>
+    </div>
+    <div class="connector"></div>
+    <div class="step {% if roadmap.final[1] > 0 %}done{% endif %}">
+        <span>3</span>
+        <h3>Chung kết</h3>
+        <p>2 đội thắng bán kết tranh chức vô địch.</p>
+        <strong>{{ roadmap.final[0] }}/{{ roadmap.final[1] }} trận đã xong</strong>
+    </div>
+</section>
+
+<section class="grid-2">
+    {% include 'standings_table.html' with context %}
+</section>
+{% endblock %}

@@ -1,0 +1,26 @@
+<div class="card">
+    <h2>Bảng A</h2>
+    <table>
+        <thead><tr><th>Hạng</th><th>Đội</th><th>Trận</th><th>Thắng</th><th>Thua</th><th>Điểm</th><th>Hiệu số</th></tr></thead>
+        <tbody>
+        {% for row in standings_a %}
+            <tr>
+                <td>{{ loop.index }}</td><td>{{ row.team_name }}</td><td>{{ row.played }}</td><td>{{ row.wins }}</td><td>{{ row.losses }}</td><td><b>{{ row.points }}</b></td><td>{{ row.diff }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="card">
+    <h2>Bảng B</h2>
+    <table>
+        <thead><tr><th>Hạng</th><th>Đội</th><th>Trận</th><th>Thắng</th><th>Thua</th><th>Điểm</th><th>Hiệu số</th></tr></thead>
+        <tbody>
+        {% for row in standings_b %}
+            <tr>
+                <td>{{ loop.index }}</td><td>{{ row.team_name }}</td><td>{{ row.played }}</td><td>{{ row.wins }}</td><td>{{ row.losses }}</td><td><b>{{ row.points }}</b></td><td>{{ row.diff }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="section-title">
+    <p class="eyebrow">Xếp hạng tự động</p>
+    <h2>Bảng xếp hạng vòng bảng</h2>
+    <p>Thứ hạng được sắp theo điểm, hiệu số, sau đó xét đối đầu nếu 2 đội bằng cả điểm và hiệu số.</p>
+</section>
+<section class="grid-2">
+    {% include 'standings_table.html' with context %}
+</section>
+{% endblock %}

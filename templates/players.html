@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="section-title">
+    <p class="eyebrow">Thống kê VĐV</p>
+    <h2>Danh sách vận động viên</h2>
+    <p>Bạn có thể tự nhập ảnh bằng URL hoặc đường dẫn ảnh trong thư mục static, ví dụ: /static/player1.jpg.</p>
+</section>
+
+<section class="card form-card">
+    <h3>Thêm VĐV mới</h3>
+    <form method="post" class="player-form">
+        <input name="full_name" placeholder="Họ tên VĐV" required>
+        <input name="birth_year" placeholder="Năm sinh">
+        <input name="nationality" placeholder="Quốc tịch">
+        <input name="height" placeholder="Chiều cao, VD: 175 cm">
+        <input name="weight" placeholder="Cân nặng, VD: 68 kg">
+        <select name="team_id" required>
+            <option value="">Chọn đội</option>
+            {% for t in teams %}<option value="{{ t.id }}">{{ t.name }} - Bảng {{ t.group_name }}</option>{% endfor %}
+        </select>
+        <input name="image_url" placeholder="Link ảnh hoặc /static/ten-anh.jpg">
+        <textarea name="description" placeholder="Mô tả thêm, thành tích, tay thuận..."></textarea>
+        <button type="submit">Thêm VĐV</button>
+    </form>
+</section>
+
+<section class="players-grid">
+    {% for p in players %}
+    <article class="player-card">
+        <div class="avatar">
+            {% if p.image_url %}<img src="{{ p.image_url }}" alt="{{ p.full_name }}">{% else %}<span>👤</span>{% endif %}
+        </div>
+        <h3>{{ p.full_name }}</h3>
+        <p>{{ p.team_name }}</p>
+        <div class="mini-stats">
+            <span>{{ p.birth_year or 'Năm sinh?' }}</span>
+            <span>{{ p.nationality or 'Quốc tịch?' }}</span>
+            <span>{{ p.height or 'Chiều cao?' }}</span>
+            <span>{{ p.weight or 'Cân nặng?' }}</span>
+        </div>
+        <a class="detail-link" href="{{ url_for('player_detail', player_id=p.id) }}">Xem chi tiết</a>
+        <details>
+            <summary>Sửa nhanh</summary>
+            <form method="post" action="{{ url_for('edit_player', player_id=p.id) }}" class="player-form compact">
+                <input name="full_name" value="{{ p.full_name }}" required>
+                <input name="birth_year" value="{{ p.birth_year or '' }}">
+                <input name="nationality" value="{{ p.nationality or '' }}">
+                <input name="height" value="{{ p.height or '' }}">
+                <input name="weight" value="{{ p.weight or '' }}">
+                <select name="team_id">
+                    {% for t in teams %}<option value="{{ t.id }}" {% if t.id == p.team_id %}selected{% endif %}>{{ t.name }}</option>{% endfor %}
+                </select>
+                <input name="image_url" value="{{ p.image_url or '' }}">
+                <textarea name="description">{{ p.description or '' }}</textarea>
+                <button type="submit">Cập nhật</button>
+            </form>
+            <form method="post" action="{{ url_for('delete_player', player_id=p.id) }}" onsubmit="return confirm('Xóa VĐV này?')">
+                <button class="danger" type="submit">Xóa</button>
+            </form>
+        </details>
+    </article>
+    {% else %}
+    <p class="empty">Chưa có VĐV nào. Hãy thêm VĐV đầu tiên.</p>
+    {% endfor %}
+</section>
+{% endblock %}

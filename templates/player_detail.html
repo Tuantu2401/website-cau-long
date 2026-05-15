@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="profile">
+    <div class="profile-img">
+        {% if player.image_url %}<img src="{{ player.image_url }}" alt="{{ player.full_name }}">{% else %}<span>👤</span>{% endif %}
+    </div>
+    <div class="profile-info">
+        <p class="eyebrow">Chi tiết VĐV</p>
+        <h2>{{ player.full_name }}</h2>
+        <p class="team-pill">{{ player.team_name }} - Bảng {{ player.group_name }}</p>
+        <div class="profile-stats">
+            <div><b>Năm sinh</b><span>{{ player.birth_year or 'Chưa cập nhật' }}</span></div>
+            <div><b>Quốc tịch</b><span>{{ player.nationality or 'Chưa cập nhật' }}</span></div>
+            <div><b>Chiều cao</b><span>{{ player.height or 'Chưa cập nhật' }}</span></div>
+            <div><b>Cân nặng</b><span>{{ player.weight or 'Chưa cập nhật' }}</span></div>
+        </div>
+        <h3>Thông tin thêm</h3>
+        <p>{{ player.description or 'Chưa có mô tả thêm.' }}</p>
+        <a class="detail-link" href="{{ url_for('players') }}">← Quay lại danh sách</a>
+    </div>
+</section>
+{% endblock %}
